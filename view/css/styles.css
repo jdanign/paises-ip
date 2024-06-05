@@ -1,0 +1,17 @@
+/* Sticky footer with fixed navbar */
+html{
+    height: 100%;
+}
+main > .container {
+    padding: 60px 15px 0;
+}
+
+
+.navbar-logo{
+    max-height:35px;
+} 
+
+
+.nav-link{
+    cursor:pointer;
+}
