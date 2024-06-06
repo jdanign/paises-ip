@@ -3,7 +3,8 @@
 require_once '../../config/settings.php';
 
 
-use model\Busqueda;
+use PHPUnit\Framework\TestCase,
+	model\Busqueda;
 
 
 
@@ -11,7 +12,7 @@ use model\Busqueda;
 /**
  * Pruebas unitarias para el proyecto
  */
-class BusquedaTest extends PHPUnit\Framework\TestCase {
+class BusquedaTest extends TestCase {
 	/**
 	 * Test para probar el método selectApiRest con una búsqueda con parámetro vacío.
 	 * El método debe dar una respuesta de un objeto con la propiedad 'ok' en 'true'.
