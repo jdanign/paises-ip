@@ -6,9 +6,9 @@ namespace model;
 
 // Usa el espacio de nombres
 use JsonSerializable, 
-    PDO,
     stdClass,
     Throwable, 
+    lib\Curl, 
     lib\Excepcion,
     lib\Saneado,
     lib\Respuesta,
@@ -160,7 +160,7 @@ class Busqueda implements JsonSerializable{
         $status = null;
 
         try {
-            $status = Respuesta::ok();
+            $status = json_decode(Curl::get($this->__toString()));
 
         } catch (Throwable $th) {
             Excepcion::logCapturada($th);

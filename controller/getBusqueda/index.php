@@ -5,7 +5,6 @@ require_once '../../config/settings.php';
 
 // Usa el espacio de nombres
 use database\Conn,
-    lib\Curl,
     lib\Excepcion,
     lib\Respuesta,
     model\Busqueda,
@@ -29,7 +28,7 @@ try {
 
         if ($thisBusqueda instanceof Busqueda){
             // Petición a la API externa
-            $respApi = json_decode(Curl::get($thisBusqueda->__toString()));
+            $respApi = $thisBusqueda->selectApiRest();
         }
 
         // Respuesta correcta de la API externa
@@ -43,6 +42,8 @@ try {
             if ($resp['ok'] === true)
                 $resp = $thisBusquedaResultado->obtener($conexionDB);
         }
+        else if ($respApi->error ?? false && strlen($respApi->msg ?? ''))
+            $resp = Respuesta::error(msg: $respApi->msg);
         else
             $resp = Respuesta::error(msg: 'ERROR. No ha sido posible realizar la búsqueda en la API externa');
     }

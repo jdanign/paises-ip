@@ -41,7 +41,8 @@ const submitFormProcessResult = (card, objResp)=>{
         titulo.innerHTML = ip;
         subtitulo.innerHTML = country;
         boton.dataset.ip = ip;
-    }        
+        $(card).toggleClass('d-none', false);
+    }
 }
 
 
@@ -67,9 +68,7 @@ const submitForm = async (data, card)=>{
         success:(result)=>{
             try {
                 const objResp = JSON.parse(result);
-                console.log(objResp);
                 submitFormProcessResult(card, objResp);
-                $(card).toggleClass('d-none', false);
             } 
             catch (error) {
                 console.error('ERROR. No ha sido posible procesar la respuesta del servidor');
