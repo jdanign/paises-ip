@@ -1,7 +1,7 @@
 <?php
 
-define('ACCESO_PERMITIDO', true);
-require_once '../../config/settings.php';
+//define('ACCESO_PERMITIDO', true);
+
 
 
 // Usa el espacio de nombres
