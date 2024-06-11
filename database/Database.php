@@ -11,6 +11,9 @@ use PDO;
 
 
 
+require_once "{$_SERVER['DOCUMENT_ROOT']}/config/access.php";
+
+
 /**
  * Clase que conteiene la configuración para conectar con la base de datos.
  */

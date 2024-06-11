@@ -1,6 +1,9 @@
 <?php
 
 
+require_once 'access.php';
+
+
 // Importa las clases cuando se usan los namespaces
 require_once 'autoload.php';
 

@@ -1,5 +1,6 @@
 <?php
 
+define('ACCESO_PERMITIDO', true);
 require_once '../../config/settings.php';
 
 

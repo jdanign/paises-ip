@@ -17,6 +17,9 @@ use JsonSerializable,
 
 
 
+require_once "{$_SERVER['DOCUMENT_ROOT']}/config/access.php";
+
+
 /**
  * Clase que reune todos los atributos y métodos relativos a la búsqueda de elementos.
  */

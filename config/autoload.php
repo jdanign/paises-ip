@@ -1,4 +1,7 @@
 <?php
+
+require_once 'access.php';
+
 /**
  * Importa las clases que se usen con los namespaces.
  */

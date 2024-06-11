@@ -14,6 +14,9 @@ use PDO,
 
 
 
+require_once "{$_SERVER['DOCUMENT_ROOT']}/config/access.php";
+
+
 /**
  * Clase que conteiene un método estático con la conexión a la Base de Datos.
  * Esta clase no puede ser heredada.
