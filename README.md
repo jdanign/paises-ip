@@ -16,6 +16,7 @@ He seguido la arquitectura Modeo, Vista, Controlador.
 ## Apache
 
 ### Configuración global
+
 En el archivo httpd.conf de apache:
 
 ```plaintext
@@ -36,14 +37,15 @@ RequestReadTimeout header=10-20,MinRate=500 body=20,MinRate=500
 
 
 # Config proyectos
-IncludeOptional "${DIR_PRUEBAS_LABORALES}*/httpd.conf"
-IncludeOptional "${DIR_PRUEBAS_LABORALES}*/httpd-vhost.conf"
+IncludeOptional "${DIR_PRUEBAS}/*/httpd.conf"
+IncludeOptional "${DIR_PRUEBAS}/*/httpd-vhost.conf"
 ```
 
 ### Configuración en el proyecto
+
 ```plaintext
 # Define variables
-Define DOCUMENT_ROOT "${DIR_PRUEBAS_LABORALES}/paises-auren"
+Define DOCUMENT_ROOT "${DIR_PRUEBAS}/paises-auren"
 
 
 # DocumentRoot: The directory out of which you will serve your
@@ -118,7 +120,6 @@ RedirectMatch 404 README.md
 ErrorDocument 404 "404 - No se ha encontrado el recurso"
 ```
 
-
 ## Base de Datos
 
 Las consultas necesarias para desplegar la base de datos están en el directorio ***/doc***.
@@ -129,7 +130,6 @@ Los parámetros de conexión con Base de Datos están configurados en la clase *
 
 Cabe la posibilidad de conectar, justo antes de realizar la consulta, con los distintos DSN configurados en este archivo, simplemente cuando se crea la instancia de la clase **Conn**, en el archivo *****Conn.php*****, la cual realiza conexión a la base de datos utilizando PDO.
 
-
 ## API externa
 
 La API REST externa que se ha propuesto no funciona correctamente en estos momentos, por lo que he tenido que buscar una API alternativa.
@@ -137,7 +137,6 @@ La API REST externa que se ha propuesto no funciona correctamente en estos momen
 API para realizar las consultas externas: [ipwhois](https://ipwho.is).
 
 La documentación de la API: [Documentación](https://ipwhois.io/documentation).
-
 
 ## Funcionamiento
 
