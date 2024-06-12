@@ -55,7 +55,7 @@ const submitFormProcessResult = (card, objResp)=>{
  */
 const submitForm = async (data, card)=>{
     await $.ajax({
-        url: 'controller/getBusqueda',
+        url: 'controller/getBusqueda/',
         method: 'post',
         data,
         beforeSend:()=>{
@@ -90,7 +90,7 @@ const submitForm = async (data, card)=>{
  */
 const removeIp = (e, card)=>{
     $.ajax({
-        url: 'controller/removeIp',
+        url: 'controller/removeIp/',
         method: 'delete',
         data:{
             ip: e.target.dataset.ip,
