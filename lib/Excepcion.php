@@ -10,10 +10,7 @@ use Exception,
 
 
 
-
-require_once "{$_SERVER['DOCUMENT_ROOT']}/config/access.php";
-
-
+    
 /**
  * Clase que reune todos los métodos relativos al manejo de excepciones.
  * Al usar el constructor de esta clase se pueden capturar excepciones relativas a esta clase y usarlas 

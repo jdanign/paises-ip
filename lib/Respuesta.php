@@ -6,9 +6,6 @@ namespace lib;
 
 
 
-require_once "{$_SERVER['DOCUMENT_ROOT']}/config/access.php";
-
-
 /**
  * Clase que reune todos los métodos relativos al manejo de excepciones.
  */
