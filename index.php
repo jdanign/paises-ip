@@ -1,4 +1,7 @@
 <?php
+
+//define('ACCESO_PERMITIDO', true);
+
 readfile('./view/layout/head.html');
 readfile('./view/layout/header.html');
 readfile('./view/layout/main.html');

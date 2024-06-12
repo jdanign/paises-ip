@@ -13,6 +13,111 @@ El frontend de la aplicación ha sido desarrollado con:
 
 He seguido la arquitectura Modeo, Vista, Controlador.
 
+## Apache
+
+### Configuración global
+En el archivo httpd.conf de apache:
+
+```plaintext
+# Ocultar versión y sistema
+ServerSignature Off
+ServerTokens Prod
+
+
+# Evita mostrar el número de inodo, el límite MIME multiparte y el proceso hijo a través de la cabecera Etag
+FileETag none
+
+
+# Cierra las conexiones de los clientes que tardan demasiado en enviar su solicitud, 
+# como se ve en un ataque de Slowloris. 
+# Necesita el módulo 'mod_reqtimeout': Este módulo proporciona una directiva que permite a Apache
+# cerrar la conexión si detecta que el cliente no está enviando datos con la suficiente rapidez
+RequestReadTimeout header=10-20,MinRate=500 body=20,MinRate=500
+
+
+# Config proyectos
+IncludeOptional "${DIR_PRUEBAS_LABORALES}*/httpd.conf"
+IncludeOptional "${DIR_PRUEBAS_LABORALES}*/httpd-vhost.conf"
+```
+
+### Configuración en el proyecto
+```plaintext
+# Define variables
+Define DOCUMENT_ROOT "${DIR_PRUEBAS_LABORALES}/paises-auren"
+
+
+# DocumentRoot: The directory out of which you will serve your
+# documents. By default, all requests are taken from this directory, but
+# symbolic links and aliases may be used to point to other locations.
+DocumentRoot "${DOCUMENT_ROOT}"
+
+<Directory "${DOCUMENT_ROOT}">
+    #
+    # Possible values for the Options directive are "None", "All",
+    # or any combination of:
+    #   Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
+    #
+    # Note that "MultiViews" must be named *explicitly* --- "Options All"
+    # doesn't give it to you.
+    #
+    # The Options directive is both complicated and important.  Please see
+    # http://httpd.apache.org/docs/2.4/mod/core.html#options
+    # for more information.
+    # -Indexes Desactiva listado de directorios
+    Options -Indexes +FollowSymLinks +Includes +ExecCGI
+
+    #
+    # AllowOverride controls what directives may be placed in .htaccess files.
+    # It can be "All", "None", or any combination of the keywords:
+    #   AllowOverride FileInfo AuthConfig Limit
+    #
+    AllowOverride None
+
+    #
+    # Controls who can get stuff from this server.
+    #
+    # Require all denied
+    Require all granted
+
+    # Bloquea que se suban contenido de más de 1MB
+    LimitRequestBody 1024000
+</Directory>
+
+<Directory "controller">
+    Require all granted
+</Directory>
+
+<Directory "view">
+    Require all granted
+</Directory>
+
+<FilesMatch "index\.php">
+    Require all granted
+</FilesMatch>
+
+
+
+
+# Bloquear el acceso a archivos y directorios de Git
+RedirectMatch 404 .conf
+RedirectMatch 404 /\.git
+RedirectMatch 404 /\.vscode
+RedirectMatch 404 .gitignore
+RedirectMatch 404 README.md
+
+
+# Customizable error responses come in three flavors:
+# 1) plain text 2) local redirects 3) external redirects
+#
+# Some examples:
+#ErrorDocument 500 "The server made a boo boo."
+#ErrorDocument 404 "/missing.html"
+#ErrorDocument 404 "/cgi-bin/missing_handler.pl"
+#ErrorDocument 402 http://www.example.com/subscription_info.html
+
+ErrorDocument 404 "404 - No se ha encontrado el recurso"
+```
+
 
 ## Base de Datos
 
@@ -42,16 +147,13 @@ Una vez localizada la IP, almacena la información, insertando o actualizando el
 
 Posteriormente, se envía la información al frontend y se muestra en el navegador.
 
-
 ### Localizar una IP concreta
 
 Hay que introducir una IP en el buscador ubicado en la parte superior derecha.
 
-
 ### Localizar la IP propia
 
 Hay que hacer clic en el elemento del menú superior con la etiqueta "Mi IP".
-
 
 ### Eliminación de una IP almacenada
 
