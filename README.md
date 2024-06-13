@@ -15,9 +15,9 @@ He seguido la arquitectura Modeo, Vista, Controlador.
 
 ## Apache
 
-### Configuración global
+### Configuración global de apache
 
-En el archivo httpd.conf de apache:
+##### Archivo httpd.conf
 
 ```plaintext
 # Ocultar versión y sistema
@@ -38,86 +38,102 @@ RequestReadTimeout header=10-20,MinRate=500 body=20,MinRate=500
 
 # Config proyectos
 IncludeOptional "${DIR_PRUEBAS}/*/httpd.conf"
-IncludeOptional "${DIR_PRUEBAS}/*/httpd-vhost.conf"
 ```
 
 ### Configuración en el proyecto
 
+##### Archivo httpd.conf
+
 ```plaintext
 # Define variables
-Define DOCUMENT_ROOT "${DIR_PRUEBAS}/paises-auren"
+Define PROJECT_ROOT "paises-auren"
+Define DOCUMENT_ROOT "${DIR_PRUEBAS}/${PROJECT_ROOT}"
 
 
-# DocumentRoot: The directory out of which you will serve your
-# documents. By default, all requests are taken from this directory, but
-# symbolic links and aliases may be used to point to other locations.
-DocumentRoot "${DOCUMENT_ROOT}"
-
-<Directory "${DOCUMENT_ROOT}">
-    #
-    # Possible values for the Options directive are "None", "All",
-    # or any combination of:
-    #   Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
-    #
-    # Note that "MultiViews" must be named *explicitly* --- "Options All"
-    # doesn't give it to you.
-    #
-    # The Options directive is both complicated and important.  Please see
-    # http://httpd.apache.org/docs/2.4/mod/core.html#options
-    # for more information.
-    # -Indexes Desactiva listado de directorios
-    Options -Indexes +FollowSymLinks +Includes +ExecCGI
-
-    #
-    # AllowOverride controls what directives may be placed in .htaccess files.
-    # It can be "All", "None", or any combination of the keywords:
-    #   AllowOverride FileInfo AuthConfig Limit
-    #
-    AllowOverride None
-
-    #
-    # Controls who can get stuff from this server.
-    #
-    # Require all denied
-    Require all granted
-
-    # Bloquea que se suban contenido de más de 1MB
-    LimitRequestBody 1024000
-</Directory>
-
-<Directory "controller">
-    Require all granted
-</Directory>
-
-<Directory "view">
-    Require all granted
-</Directory>
-
-<FilesMatch "index\.php">
-    Require all granted
-</FilesMatch>
-
-
-
-
-# Bloquear el acceso a archivos y directorios de Git
-RedirectMatch 404 .conf
+# Bloquea el acceso a archivos y directorios de Git y otros que no deben ser públicos
 RedirectMatch 404 /\.git
 RedirectMatch 404 /\.vscode
+RedirectMatch 404 .conf
 RedirectMatch 404 .gitignore
 RedirectMatch 404 README.md
 
 
-# Customizable error responses come in three flavors:
-# 1) plain text 2) local redirects 3) external redirects
-#
-# Some examples:
-#ErrorDocument 500 "The server made a boo boo."
-#ErrorDocument 404 "/missing.html"
-#ErrorDocument 404 "/cgi-bin/missing_handler.pl"
-#ErrorDocument 402 http://www.example.com/subscription_info.html
+IncludeOptional "${DOCUMENT_ROOT}/httpd-vhost.conf"
+```
 
-ErrorDocument 404 "404 - No se ha encontrado el recurso"
+##### Archivo httpd-vhost.conf
+
+```plaintext
+Listen 8081
+
+
+# Configura un VirtualHost con un puerto asignado para cada proyecto
+<VirtualHost *:8081>
+    # ServerName localhost
+
+
+    # DocumentRoot: The directory out of which you will serve your
+    # documents. By default, all requests are taken from this directory, but
+    # symbolic links and aliases may be used to point to other locations.
+    DocumentRoot "${DOCUMENT_ROOT}"
+
+
+    # Directorio raiz del proyecto
+    <Directory "${DOCUMENT_ROOT}">
+        # Possible values for the Options directive are "None", "All",
+        # or any combination of:
+        #   Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
+        #
+        # Note that "MultiViews" must be named *explicitly* --- "Options All"
+        # doesn't give it to you.
+        #
+        # The Options directive is both complicated and important.  Please see
+        # http://httpd.apache.org/docs/2.4/mod/core.html#options
+        # for more information.
+        # -Indexes Desactiva listado de directorios
+        Options -Indexes +FollowSymLinks +Includes +ExecCGI
+
+        # AllowOverride controls what directives may be placed in .htaccess files.
+        # It can be "All", "None", or any combination of the keywords:
+        #   AllowOverride FileInfo AuthConfig Limit
+        AllowOverride None
+
+        # Controls who can get stuff from this server.
+        Require all denied
+        # Require all granted
+
+        # Bloquea que se suban contenido de más de 1MB
+        LimitRequestBody 1024000
+
+        # Permite que se acceda al index.php indicándolo en la url o no
+        <Files "index.php">
+            Require all granted
+        </Files>
+        <Files "">
+            Require all granted
+        </Files>
+    </Directory>
+
+    <Directory "controller">
+        Require all granted
+    </Directory>
+
+    <Directory "view">
+        Require all granted
+    </Directory>
+
+
+    # Customizable error responses come in three flavors:
+    # 1) plain text 2) local redirects 3) external redirects
+    #
+    # Some examples:
+    #ErrorDocument 500 "The server made a boo boo."
+    #ErrorDocument 404 "/missing.html"
+    #ErrorDocument 404 "/cgi-bin/missing_handler.pl"
+    #ErrorDocument 402 http://www.example.com/subscription_info.html
+
+    ErrorDocument 404 "404 - No se ha encontrado el recurso"
+</VirtualHost>
 ```
 
 ## Base de Datos
