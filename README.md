@@ -46,6 +46,7 @@ IncludeOptional "${DIR_PRUEBAS}/*/httpd.conf"
 
 ```plaintext
 # Define variables
+Define PROJECT_PORT "8081"
 Define PROJECT_ROOT "paises-auren"
 Define DOCUMENT_ROOT "${DIR_PRUEBAS}/${PROJECT_ROOT}"
 
@@ -106,21 +107,15 @@ Listen 8081
         LimitRequestBody 1024000
 
         # Permite que se acceda al index.php indicándolo en la url o no
-        <Files "index.php">
+        <FilesMatch "^(index\.php|)$">
             Require all granted
-        </Files>
-        <Files "">
-            Require all granted
-        </Files>
+        </FilesMatch>
     </Directory>
 
-    <Directory "controller">
+    # Directorios de controlador y vista
+    <DirectoryMatch "^/(controller|view)">
         Require all granted
-    </Directory>
-
-    <Directory "view">
-        Require all granted
-    </Directory>
+    </DirectoryMatch>
 
 
     # Customizable error responses come in three flavors:
@@ -132,6 +127,7 @@ Listen 8081
     #ErrorDocument 404 "/cgi-bin/missing_handler.pl"
     #ErrorDocument 402 http://www.example.com/subscription_info.html
 
+    ErrorDocument 403 "403 - Acceso denegado al recurso"
     ErrorDocument 404 "404 - No se ha encontrado el recurso"
 </VirtualHost>
 ```

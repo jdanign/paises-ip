@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "visualstudioexptteam.vscodeintellicode",
+        "xdebug.php-debug",
+        "hakcorp.php-awesome-snippets",
+        "neilbrayfield.php-docblocker",
+        "xdebug.php-pack",
+        "phproberto.vscode-php-getters-setters",
+        "zobo.php-intellisense"
+    ]
+}
